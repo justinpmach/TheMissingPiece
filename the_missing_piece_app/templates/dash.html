@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Missing Piece</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dash.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+</head>
+{% load tz %}
+{% timezone 'US/Pacific' %}
+<body>
+    <nav class="p-2 pl-3 navbar navbar-expand-lg navbar-light bg-light text-info">
+        <h2 class="pl-2 pt-2" style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing 
+            <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
+            <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
+        </h2>
+        <ul class="nav navbar-nav ml-auto" style="font-size: 16px;">
+            <li class="pr-3">Welcome, {{ user.first_name }}</li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/dash">Home</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/profile/{{user.user_name}}">Profile</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/messages">Messages</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/share">Share Story</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container px-4">
+        <div class="row mt-4">
+
+            <div class="side-story">
+                <ul class="p-0">
+                    <li class="mb-3">
+                        <div class="p-2 bg-light rounded text-info">
+                            <!------------------- DISPLAY FRIENDS ------------------->
+                            <p class="pt-1 rounded bg-info text-center text-white"style="font-size:17px">Friends</p>
+                            <!-- Loop through friends -->
+                            {% for friend in friends_list.friends.all %}
+                            <!-- Loop through friends' friends -->
+                            {% for f in friend_requests %}
+                            {% if f.user == friend %}
+                            <p>
+                                <img class="mr-2 rounded-circle" style="object-fit:cover" src="{{friend.profile_pic.url}}" width="30px" height="30px">
+                                <small>
+                                    <a href="/messages/read/{{friend.id}}"class="text-info" href="#">{{ friend.first_name }} {{ friend.last_name }}
+                                    {% if friend.logged_in == True %}</a>
+                                    <span class="float-right text-success"><b>+</b></span>
+                                    {% endif %}
+                                </small>
+                            </p>
+                            {% endif%}
+                            {% endfor %}
+                            <!-- /friends' friends -->
+                            {% endfor%}
+                            <!-- /friends -->
+
+                        {% if friend_requests %}
+                            <p class="rounded pt-1 bg-info text-white text-center">Friend requests</p>
+                            {% for f in friend_requests %}
+                            {% if f.user not in friends_list.friends.all %}
+                            <p class="" style="">
+                                <img class="mr-2 rounded-circle" style="object-fit:cover" src="{{f.user.profile_pic.url}}" width="30px" height="30px">
+                                <small>{{ f.user.first_name }} {{ f.user.last_name }}
+                                <a class="badge badge-info py-1 mb-2 float-right" href="/profile/{{ f.user.user_name }}/accept">Accept +</a>
+                                </small>
+                            </p>
+                            {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                    </li>
+                
+                    <!------------------- DISPLAY OTHER STORIES ------------------->
+                    <li>
+                        <div class="bg-light rounded pt-1 text-center text-info">
+                            <p style="font-size:17px">Other Stories</p>
+                        </div>
+                    </li>
+                {% for other in other_stories %}
+                    {% if other.submitted_by.id != user.id %}
+                    <li>
+                        <div class="card bg-dark text-white mb-2 zoom">
+                            <img class="card-img-top main-img" src="{{ other.story_img.url }}" alt="">
+                            <div class="card-img-overlay ovl">
+                                <a class="text-white" href="#{{other.id}}"><p class="card-title text-center pt-4">View {{ other.submitted_by.first_name }}'s story</p></a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="main-story ml-4">
+            {% for story in all_stories %}
+                <div class="p-1 card bg-light mb-4" style="border: 2px solid rgb(12, 114, 117)">
+                    <h6 id="{{story.id}}" class="card-title pl-2 pt-2"><img class="rounded mr-3" style="object-fit:cover" src="{{ story.submitted_by.profile_pic.url }}" alt="" height="45px" width="45px;">
+                        <a class="text-info" href="/profile/{{story.submitted_by.user_name}}">{{ story.submitted_by.user_name }}</a>
+                        <!------------------- DELETE A STORY ------------------->
+                        {% if story.submitted_by.id == user.id %}
+                        <small>
+                            <a class="pr-2 pt-3 text-danger float-right" href="share/delete/{{story.id}}">Delete Story</a>
+                        </small>
+                        {% endif %}
+                    </h6>
+                    <img class="card-img-top main-img" style="border: 2px solid rgb(12, 114, 117)" src="{{ story.story_img.url }}" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">Meet: <span class="text-info"><i>{{ story.who }}</i></span> <i class="ml-1 text-info fa fa-puzzle-piece"></i> </h5>
+                        <p class="card-text">{{ story.desc }}</p>
+                        <p class="card-text"><small class="text-muted">{{ story.created_at }}</small>
+                            <!------------------- LIKE A STORY ------------------->
+                            {% if user not in story.user_likes.all %}
+                            <small>
+                                <a class="text-info float-right"href="/s_like/{{ story.id }}">Like</a>
+                            </small>
+                            <!------------------- UNLIKE A STORY ------------------->
+                            {% else %}
+                            <small>
+                                <a class="text-info float-right"href="/s_unlike/{{ story.id }}">Unlike</a>
+                            </small>
+                            {% endif %}
+                        </p>
+                        <!------------------- DISPLAY STORY LIKES ------------------->
+                        <div class="overflow-auto" style="height:20px;">
+                            {% for like in story.user_likes.all %}
+                                <p class="pl-2 d-inline">
+                                    <small><a class="overflow-auto text-info" href="/profile/{{like.user_name}}">{{ like.user_name }}</a> liked this!</small>
+                                </p>
+                            {% endfor %}
+                        </div>
+
+                        <!------------------- DISPLAY A COMMENT ------------------->
+                        {% for c in all_comments %}
+                            {% if c.commented_story.id == story.id %}
+                        <div class="card mt-1 mx-auto shadow">
+                            
+                            <div class="card-body text-dark">
+                                <p class="card-text" style="font-size: 14px">
+                                    <img class="rounded mr-3 shadow" style="object-fit:cover" src="{{ c.user.profile_pic.url }}" alt="" height="28px" width="28px;">
+                                    <a class="text-info" href="/profile/{{c.user.user_name}}">{{ c.user.user_name }}:</a>
+                                    {{ c.comment }}
+                                <!------------------- DELETE A COMMENT ------------------->
+                                    {% if c.user.id == user.id %}
+                                    <a class="text-danger float-right" href="/delete/comment/{{ c.id }}"><small>Delete</small></a>
+                                    {% endif %}
+                                </p>
+                                <!------------------- DISPLAY COMMENT LIKES ------------------->
+                                <p class="pl-2 shadow bg-light rounded" style="font-size:12px;">
+                                    <a class="text-info" href="#">{{ c.c_user_likes.all.count }}</a> likes
+                                <!------------------- LIKE A COMMENT ------------------->
+                                    {% if user not in c.c_user_likes.all %}
+                                    <a class="pl-2 text-info"href="/like/{{ c.id }}">Like</a>
+                                <!------------------- UNLIKE A COMMENT ------------------->
+                                    {% else %}
+                                    <a class="pl-2 text-info"href="/unlike/{{ c.id }}">Unlike</a>
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                        </div>
+                            {% endif %}
+                        {% endfor %}
+                        <!------------------- POST A COMMENT ------------------->
+                        <div class="form-group mt-2">
+                            <form action="/post_comment" method="post">
+                            {% csrf_token %}
+                                <input type="hidden" name="story_id" value={{story.id}}>
+                                <textarea class="form-control" rows="2" name="comment" placeholder="Leave a comment"></textarea>
+                                <button class="float-right btn btn-info btn-sm mr-3 mt-1">Comment</button>
+                            </form>
+                        </div>
+                            
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+            <div class="side-dash ml-4">
+                <ul class="p-0">
+                    <li>
+                        <div class="bg-light rounded pt-1 text-center text-info">
+                            <p>Featured News</p>
+                        </div>
+                    </li>
+                    <li class="bg-warning rounded">
+                        <a href="https://www.spectrumnews.org/news/newly-identified-mutations-clarify-genes-link-to-autism-intellectual-disability/"><img class="article-img rounded" src="../static/img/article-1.jpg" alt=""></a>
+                        <a href="https://www.spectrumnews.org/news/newly-identified-mutations-clarify-genes-link-to-autism-intellectual-disability/"><p class="pl-2 pt-2 text-white">Newly identified mutations clarify gene's link to autism, intellectual disability</p></a>
+                        <p class="pl-2 pb-1"><small>BY: LAURA DATTARO</small></p>
+                    </li>
+                    <li class="bg-info rounded">
+                        <a href="https://www.spectrumnews.org/news/little-known-gene-tied-to-autism-developmental-delay/"><img class="article-img rounded" src="../static/img/article-2.jpg" alt=""></a>
+                        <a href="https://www.spectrumnews.org/news/little-known-gene-tied-to-autism-developmental-delay/"><p class="pl-2 pr-1 py-2 text-white">Little-known gene tied to autism, developmental delay</p></a>
+                        <p class="pl-2 pb-1"><small>BY: EMILY ANTHES</small></p>
+                    </li>
+                    <li class="bg-primary rounded">
+                        <a href="https://www.spectrumnews.org/news/infants-attention-to-faces-may-predict-autism-before-formal-diagnosis/"><img class="article-img rounded" src="../static/img/article-3.jpg" alt=""></a>
+                        <a href="https://www.spectrumnews.org/news/infants-attention-to-faces-may-predict-autism-before-formal-diagnosis/"><p class="pl-2 py-2 text-white">Infants’ attention to faces may predict autism before formal diagnosis</p></a>
+                        <p class="pl-2 pb-1"><small>BY: PETER HESS</small></p>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+{% endtimezone %}
+</html>

@@ -1,0 +1,89 @@
+*{
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6) ), url('/static/img/puzzle_hero.jpg') no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+nav h2{
+    font-weight: bold;
+}
+
+.logo{
+    width: 43px;
+    height: 43px;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+/* Friends List */
+.friends-list{
+    width: 230px;
+}
+
+/****** Side Story Bar ******/
+.side-story{
+    width: 230px;
+}
+
+.side-story ul li{
+    list-style-type: none;
+}
+
+/* Zoom */
+.zoom{
+    overflow: hidden;
+}
+.zoom img{
+    transition: all 2s;
+    transform: scale(1);
+}
+
+.zoom:hover img{
+    transform: scale(1.2);
+}
+
+/* Overlay */
+.ovl{
+    opacity:0;
+}
+
+.ovl:hover{
+    opacity: 1;
+    background: rgb(0,0,0,0.4)
+}
+
+/****** Main Story Feed ******/
+.main-story{
+    max-width: 600px;
+    overflow: auto;
+}
+
+/****** Featured News Sidebar ******/
+.side-dash{
+    width: 240px;
+    font-size: 17px;
+}
+
+.side-dash ul li{
+    list-style-type: none;
+}
+
+.article-img{
+    width: 240px;
+    border: 2px solid white;
+}
+
+
+
+
+#footer{
+    height: 50px;
+}
+
+#footer ul li{
+    display: inline-block;
+}

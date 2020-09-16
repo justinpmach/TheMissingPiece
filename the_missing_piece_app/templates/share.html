@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Missing Piece</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/share.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="p-2 pl-3 navbar navbar-expand-lg navbar-light bg-light text-info">
+        <h2 class="pl-2 pt-2" style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing 
+            <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
+            <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
+        </h2>
+        <ul class="nav navbar-nav ml-auto" style="font-size: 16px;">
+            <li class="pr-3">{{ user.user_name }}</li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/dash">Home</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/profile/{{user.user_name}}">Profile</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/messages">Messages</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/share">Share Story</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class ="container mb-3">
+        <div class="card mt-4">
+            <div class="card-title bg-info text-center text-white py-3 rounded">
+                <h2>Share your story with us!</h2>
+            </div>
+            <div class="card-body bg-light text-center">
+                <p class="card-text text-primary">Please share your experience with Autism Spectrum Disorder, how it has affected your life, what are some things you struggled with and how that struggle has changed your view on people with Autism.</p>
+                <form class="" action="/share/create" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                    {% csrf_token %}
+                        <label>Who is your missing piece?</label>
+                        <input class="form-control" type="text" name="who">
+                    </div>
+                    <div class="form-group">       
+                        <label>Please share your experience:</label>
+                        <textarea class="form-control" rows="10" type="text" name="desc"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input class="custom-file-input" type="file" name="story_img" accept="image/jpg,image/jpeg,image/gif,image/png">
+                            <label class="custom-file-label">Upload Image</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-info mt-3">Share Story!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

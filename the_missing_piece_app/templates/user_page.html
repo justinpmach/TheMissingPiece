@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Missing Piece</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_page.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
+</head>
+{% load tz %}
+{% timezone 'US/Pacific' %}
+<body>
+    <nav class="p-2 pl-3 navbar navbar-expand-lg navbar-light bg-light text-info">
+        <h2 class="pl-2 pt-2" style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing 
+            <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
+            <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
+        </h2>
+        <ul class="nav navbar-nav ml-auto" style="font-size: 16px;">
+            <li class="pr-3">{{ user.user_name }}</li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/dash">Home</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/profile/{{user_id.user_name}}">Profile</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/messages">Messages</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/share">Share Story</a>
+            </li>
+            <li class="pr-3">
+                <a class="text-secondary" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+
+        <div class="row rounded mt-4">
+            <div class="col-3 pt-3 pl-4 h-50 bg-light rounded">
+                <img class="rounded-circle mb-3 ml-1" style="object-fit:cover" src="{{ user.profile_pic.url }}"alt="Profile Picture" height="230px" width="230px">
+                <h3 class="bg-info rounded text-white text-center py-1"><span class="text-secondary">@</span> {{ user.user_name }}</h3>
+                {% if user.id == user_id.id %}
+                <form class="mt-3" action="/profile/{{user_id.user_name}}/edit" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input class="custom-file-input" type="file" name="profile_pic" accept="image/jpg,image/jpeg,image/gif,image/png">
+                            <label class="custom-file-label">Image</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-info">Upload</button>
+                        </div>
+                    </div>
+
+                </form>
+                {% endif %}
+
+            {% if user.id != user_id.id %}
+                {% if user not in friends_list.friends.all and user_id not in f.friends.all %}
+                <a class="mt-3 btn btn-lg btn-outline-info" href="/profile/{{ user.user_name }}/add">Add Friend +</a>
+                {% elif user_id in f.friends.all and user in friends_list.friends.all %}
+                <a class="mt-3 btn btn-lg btn-outline-info" href="#">Friends</a>
+                {% elif user_id not in f.friends.all and user in friends_list.friends.all %}
+                <a class="mt-3 btn btn-lg btn-outline-info" href="#">Pending</a>
+                {% endif %}
+            {% endif %}
+                <h4 class="mt-4"><b>About:</b></h4>
+                <p><b>Name:</b> {{ user.first_name }} {{ user.last_name }}</p>
+                <p><b>Email:</b> {{ user.email }}</p>
+                <p><b>Birthday:</b> {{ user.birthday|date }}</p>
+                <p><b>Member Since:</b> {{ user.created_at|date }}</p>
+            </div>
+            <div class="col-6">
+
+                <!--------------- SHARED STORIES ---------------->
+                <div class="rounded p-3 bg-info">
+                    <h2 class="text-center text-white">Shared Stories:</h2>
+                    {% for story in profile_story %}
+                    <div class="p-1 card bg-light mb-4" style="border: 2px solid rgb(12, 114, 117)">
+                        <!------------------- DELETE A STORY ------------------->
+                        {% if story.submitted_by.id == user_id.id %}
+                        <small>
+                            <a class="pr-2 pt-3 text-danger float-right" href="share/delete/{{story.id}}">Delete Story</a>
+                        </small>
+                        {% endif %}
+                        <img class="card-img-top main-img" style="border: 2px solid rgb(12, 114, 117)" src="{{ story.story_img.url }}" alt="Story Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Meet: {{ story.who }}</h5>
+                            <p class="card-text">{{ story.desc }}</p>
+                            <p class="card-text"><small class="text-muted">{{ story.created_at }}</small>
+                                <!------------------- LIKE A STORY ------------------->
+                                {% if user not in story.user_likes.all %}
+                                <small>
+                                    <a class="text-info float-right"href="/s_like/{{ story.id }}">Like</a>
+                                </small>
+                                <!------------------- UNLIKE A STORY ------------------->
+                                {% else %}
+                                <small>
+                                    <a class="text-info float-right"href="/s_unlike/{{ story.id }}">Unlike</a>
+                                </small>
+                                {% endif %}
+                            </p>
+                            <!------------------- DISPLAY STORY LIKES ------------------->
+                            <div class="overflow-auto" style="height:20px;">
+                                {% for like in story.user_likes.all %}
+                                    <p class="pl-2 d-inline">
+                                        <small><a class="overflow-auto text-info" href="/profile/{{like.user_name}}">{{ like.user_name }}</a> liked this!</small>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                            <!------------------- DISPLAY A COMMENT ------------------->
+                            {% for c in all_comments %}
+                                {% if c.commented_story.id == story.id %}
+                            <div class="card mt-1 mx-auto shadow">
+                                
+                                <div class="card-body text-dark">
+                                    <p class="card-text" style="font-size: 14px">
+                                        <img class="rounded mr-3 shadow" style="object-fit:cover" src="{{ c.user.profile_pic.url }}" alt="" height="28px" width="28px;">
+                                        <a class="text-info" href="/profile/{{c.user.user_name}}">{{ c.user.user_name }}:</a>
+                                        {{ c.comment }}
+                                    <!------------------- DELETE A COMMENT ------------------->
+                                        {% if c.user.id == user.id %}
+                                        <a class="text-danger float-right" href="/delete/comment/{{ c.id }}"><small>Delete</small></a>
+                                        {% endif %}
+                                    </p>
+                                    <!------------------- DISPLAY COMMENT LIKES ------------------->
+                                    <p class="pl-2 shadow bg-light rounded" style="font-size:12px;">
+                                        <a class="text-info" href="#">{{ c.c_user_likes.all.count }}</a> likes
+                                    <!------------------- LIKE A COMMENT ------------------->
+                                        {% if user not in c.c_user_likes.all %}
+                                        <a class="pl-2 text-info"href="/like/{{ c.id }}">Like</a>
+                                    <!------------------- UNLIKE A COMMENT ------------------->
+                                        {% else %}
+                                        <a class="pl-2 text-info"href="/unlike/{{ c.id }}">Unlike</a>
+                                        {% endif %}
+                                    </p>
+                                </div>
+
+                            </div>
+                                {% endif %}
+                            {% endfor %}
+                            <!------------------- POST A COMMENT ------------------->
+                            <div class="form-group mt-2">
+                                <form action="/post_comment" method="post">
+                                {% csrf_token %}
+                                    <input type="hidden" name="story_id" value={{story.id}}>
+                                    <textarea class="form-control" rows="2" name="comment" placeholder="Leave a comment"></textarea>
+                                    <button class="float-right btn btn-info btn-sm mr-3 mt-1">Comment</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!------------------- FRIENDS LIST ------------------->
+            <div class="col-3 p-3 h-50 bg-light rounded text-info">
+                <h6 class="py-2 pl-4 shadow rounded bg-light">Friends <span class="text-success">(Online)</span></h6>
+                <ul class="py-3 shadow bg-light rounded text-success">
+                        {% for friend in friends_list.friends.all %}
+                        <li><a class="text-info"href="/profile/{{friend.user_name}}">{{ friend.user_name }}</a></li>
+                        {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+
+</body>
+{% endtimezone %}
+</html>

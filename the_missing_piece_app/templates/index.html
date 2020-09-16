@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Missing Piece</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+</head>
+<body class="puzzle_hero">
+    <nav class="p-2 pl-4 navbar navbar-expand-lg navbar-light bg-light text-info justify-content-between">
+        <h2 style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing
+            <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
+            <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
+            <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
+        </h2>
+        <form action="/login" method="post">
+            {% csrf_token %}
+            <ul class="nav navbar-nav">
+                <li>
+                    <label class="pr-1" for="">Email:</label> 
+                    <input class="mr-2 p-1 rounded" type="email" name="email" id="" placeholder="email@email.com">
+                    <label class="pr-1" for="">Password:</label> 
+                    <input class="mr-2 p-1 rounded" type="password" name="password" id="" placeholder="enter password">
+                </li>
+                <li>
+                    <button class="btn btn-info btn-sm">Login</button>
+                </li>
+            </ul>
+        </form>
+    </nav>
+    <div class="container-fluid text-white">
+        <div class="row">
+            <div class="mt-5 ml-5">
+                <img class="reg-photo" src="../static/img/IMG_1204.JPG" alt="">
+            </div>
+            <div class="col-5 text-white mt-5 mb-4 ml-5 reg-box pt-4">
+                <h4 class="text-center mb-4">Registration</h4>
+                <form action="/register" method="post">
+                    {% csrf_token %}
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-puzzle-piece"></i> </span>
+                        </div>
+                        <input class="form-control" placeholder="Username" type="text" name="user_name" id="">
+                    </div> 
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user"></i> </span>
+                        </div>
+                        <input class="form-control" placeholder="First Name" type="text" name="first_name" id="">
+                    </div> 
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-user"></i> </span>
+                        </div>
+                        <input class="form-control" placeholder="Last Name" type="text" name="last_name" id="">
+                    </div> 
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-birthday-cake"></i> </span>
+                        </div>
+                        <input class="form-control" placeholder="Birthday" type="date" name="birthday" id="">
+                    </div> 
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope"></i> </span>
+                        </div>
+                        <input class="form-control" placeholder="Email" type="email" name="email" id="">
+                    </div> 
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-lock"></i> </span>
+                        </div>
+                        <input class="form-control" placeholder="Password" type="password" name="password" id="">
+                    </div> 
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-lock"></i> </span>
+                        </div>
+                        <input class="form-control" placeholder="Confirm Password" type="password" name="cpassword" id="">
+                    </div>
+                    <div class="col">
+                        <button class="mt-1 mb-4 btn btn-info" style="margin-left:126px;">Register</button>
+                    </div>
+                </form>
+            </div>
+            {% if messages %}
+            <div class="">
+                <ul>
+                    {% for message in messages %}
+                        <li class="text-danger">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

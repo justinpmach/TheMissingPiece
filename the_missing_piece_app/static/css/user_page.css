@@ -1,0 +1,29 @@
+*{
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6) ), url('/static/img/puzzle_hero.jpg') no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+nav h2{
+    font-weight: bold;
+}
+
+.logo{
+    width: 43px;
+    height: 43px;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+
+#footer{
+    height: 50px;
+}
+
+#footer ul li{
+    display: inline-block;
+}

@@ -1,0 +1,77 @@
+*{
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6) ), url('/static/img/puzzle_hero.jpg') no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+nav h2{
+    font-weight: bold;
+}
+
+.logo{
+    width: 43px;
+    height: 43px;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+.reg-box{
+    background-color: rgba(55, 177, 177, 0.733);
+    border-radius: 30px;
+    padding: 0 80px;
+}
+
+.reg-photo{
+    width: 500px;
+    height: 521px;
+    margin-left: 50px;
+    border-radius: 30px;
+}
+
+/* @media (max-width: 1200px) {
+
+}
+
+@media (max-width: 1023px) {
+    body { font-size: 14px; }
+
+    .reg-photo { 
+        width: 430px;
+        height: 520px;
+        margin-left: 20px;
+        border-radius: 30px;
+    }
+
+    .reg-box{
+        background-color: rgba(55, 177, 177, 0.733);
+        border-radius: 30px;
+        padding: 0px 50px;
+        height: 520px;
+    }
+}
+
+@media (max-width: 767px) {
+    body { font-size: 12px; }
+
+    .reg-photo { 
+        width: 400px;
+        height: 450px;
+        margin-left: px;
+        border-radius: 30px;
+    }
+
+    .reg-box{
+        background-color: rgba(55, 177, 177, 0.733);
+        border-radius: 30px;
+        padding: 0px 50px;
+        height: 520px;
+    }
+}
+
+@media (max-width: 480px) {
+
+} */
