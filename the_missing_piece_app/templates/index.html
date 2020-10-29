@@ -12,14 +12,16 @@
 </head>
 <body class="puzzle_hero">
     <nav class="p-2 pl-4 navbar navbar-expand-lg navbar-light bg-light text-info justify-content-between">
-        <h2 style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing
-            <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
-            <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
-        </h2>
+        <a href="/" style="text-decoration: none;">
+            <h2 class="text-info" style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing
+                <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
+                <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
+                <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
+                <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
+                <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
+                <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
+            </h2>
+        </a>
         <form action="/login" method="post">
             {% csrf_token %}
             <ul class="nav navbar-nav">

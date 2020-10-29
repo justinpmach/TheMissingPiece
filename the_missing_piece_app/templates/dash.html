@@ -14,14 +14,16 @@
 {% timezone 'US/Pacific' %}
 <body>
     <nav class="p-2 pl-3 navbar navbar-expand-lg navbar-light bg-light text-info">
-        <h2 class="pl-2 pt-2" style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing 
-            <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
-            <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
-            <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
-        </h2>
+        <a href="/dash" style="text-decoration: none;">
+        	<h2 class="text-info pl-2 pt-2" style="text-shadow: 2px 2px rgb(107, 107, 107)">The Missing 
+        	    <span style="text-shadow: 2px 2px grey; color:rgb(252, 78, 78)">P</span>
+        	    <span style="text-shadow: 2px 2px grey; color:rgb(222, 226, 0)">i</span>
+        	    <span style="text-shadow: 2px 2px grey; color:rgb(74, 153, 255)">e</span>
+        	    <span style="text-shadow: 2px 2px grey; color:rgb(80, 207, 154)">c</span>
+        	    <span style="text-shadow: 2px 2px grey; color:rgb(155, 82, 238)">e</span>
+        	    <img class="logo" src="../static/img/mp_logo.PNG" alt="Missing Piece Logo">
+        	</h2>
+        </a>
         <ul class="nav navbar-nav ml-auto" style="font-size: 16px;">
             <li class="pr-3">Welcome, {{ user.first_name }}</li>
             <li class="pr-3">
