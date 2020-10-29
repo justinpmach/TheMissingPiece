@@ -11,6 +11,34 @@ def index(request):
     #     return redirect('/dash')
     return render(request, 'index.html')
 
+# --------------- GUEST LOGIN ----------------- #
+def guest(request):
+    errors = User.objects.login_validator(request.POST)
+
+    if len(errors) > 0:
+        for key,value in errors.items():
+            messages.error(request,value)
+        return redirect("/")
+
+    found_user = User.objects.filter(email=request.POST['email']).first()
+
+    if found_user:
+        is_pw_correct = bcrypt.checkpw(
+            request.POST['password'].encode(), 
+            found_user.password.encode()
+    )
+        if is_pw_correct:
+            request.session['user_id'] = found_user.id
+            return redirect('/dash')
+        else:
+            print("something is not working")
+            return redirect("/")
+    else:
+        print("something is not working")
+        return redirect("/")
+    
+    return redirect("/dash")
+
 # --------------- REGISTER ----------------- #
 def register(request):
     errors = User.objects.validator(request.POST)
